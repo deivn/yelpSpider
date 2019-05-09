@@ -10,40 +10,29 @@ import scrapy
 
 class YelpspiderItem(scrapy.Item):
     # reffere
+    referer = scrapy.Field()
     # 当前页
-    page_url = scrapy.Field()
-    # 公司名称
-    company = scrapy.Field()
-    # 地址:  录入地址 + 公司名称 + 城市名称 + 州名称
-    address = scrapy.Field()
-    # 描述
-    content = scrapy.Field()
-    # 首图
-    img_url = scrapy.Field()
-    # logo
+    detail_page_url = scrapy.Field()
     logo = scrapy.Field()
-    # phone
-    phone = scrapy.Field()
-    # 业务描述
-    business_content = scrapy.Field()
-    # websiteurl
-    websiteurl = scrapy.Field()
+    # 公司名
+    company = scrapy.Field()
+    address = scrapy.Field()
     # category
     category = scrapy.Field()
-    # zip
-    zip = scrapy.Field()
-    # state_id
-    state_id = scrapy.Field()
-    # city_id
-    city_id = scrapy.Field()
-    # uid
-    uid = scrapy.Field()
-    # service_id
-    service_id = scrapy.Field()
-    # latitude
+    # 手机号
+    phone = scrapy.Field()
+    websiteurl = scrapy.Field()
+    # 公司图片
+    img_url = scrapy.Field()
+    # 描述
+    content = scrapy.Field()
+    # bussiness_content
+    business_content = scrapy.Field()
+    # 经纬度
     latitude = scrapy.Field()
-    # longitude
     longitude = scrapy.Field()
+    # 当前时间
+    date_time = scrapy.Field()
 
 
 

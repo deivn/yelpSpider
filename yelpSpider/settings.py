@@ -17,10 +17,10 @@ DATA_PATH_PREFIX = "D:/yelp/data"
 SPIDER_MODULES = ['yelpSpider.spiders']
 NEWSPIDER_MODULE = 'yelpSpider.spiders'
 
-MYSQL_HOST = "localhost"
+MYSQL_HOST = "184.181.11.233"
 MYSQL_PORT = 3306
-MYSQL_USER = "root"
-MYSQL_PASSWD = ""
+MYSQL_USER = "ebuyhouse"
+MYSQL_PASSWD = "ebuyhouse135"
 MYSQL_DB = "crawl_data"
 
 
@@ -35,12 +35,6 @@ REDIRECT_ENABLED = False
 # HTTPERROR_ALLOWED_CODES = [301, 302]
 
 # PHANTOMJS_PATH = 'D:\\devtools\\phantomjs-2.1.1-windows\\bin\\phantomjs.exe'
-
-MYSQL_HOST = "localhost"
-MYSQL_PORT = 3306
-MYSQL_USER = "root"
-MYSQL_PASSWD = ""
-MYSQL_DB = "crawl_data"
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 # CONCURRENT_REQUESTS = 32
 
@@ -87,26 +81,20 @@ USER_AGENTS = [
     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_3) AppleWebKit/535.20 (KHTML, like Gecko) Chrome/19.0.1036.7 Safari/535.20",
     "Opera/9.80 (Macintosh; Intel Mac OS X 10.6.8; U; fr) Presto/2.9.168 Version/11.52",
 ]
-
+USER_PASS = "wh429004:ylsvtvu1"
 # 代理
-# {'ip_port': '42.51.13.70:16816', 'user_pass': 'wh429004:ylsvtvu1'},
-# PROXIES = [
-#     {'ip_port': 'aes-256-cfb:BSlAILjHC7@114353.us-1.baacloud1.com:51329', 'user_pass': 'szyt2017:BSlAILjHC7'},
-#     {'ip_port': 'aes-256-cfb:BSlAILjHC7@114353.us-1.baacloud1.com:51329', 'user_pass': 'szyt2017:BSlAILjHC7'},
-#     {'ip_port': 'aes-256-cfb:BSlAILjHC7@114353.hk-1.baacloud1.com:51329', 'user_pass': 'szyt2017:BSlAILjHC7'},
-#     {'ip_port': 'aes-256-cfb:BSlAILjHC7@114353.jp-2.baacloud1.com:51329', 'user_pass': 'szyt2017:BSlAILjHC7'},
-#     {'ip_port': 'aes-256-cfb:BSlAILjHC7@114353.ru-3.baacloud1.com:51329', 'user_pass': 'szyt2017:BSlAILjHC7'},
-#     {'ip_port': 'aes-256-cfb:BSlAILjHC7@114353.us-3.baacloud1.com:51329', 'user_pass': 'szyt2017:BSlAILjHC7'},
-#     {'ip_port': 'aes-256-cfb:BSlAILjHC7@114353.tw-1.baacloud1.com:51329', 'user_pass': 'szyt2017:BSlAILjHC7'},
-#     {'ip_port': 'aes-256-cfb:BSlAILjHC7@114353.s-jp-1.baacloud1.com:51329', 'user_pass': 'szyt2017:BSlAILjHC7'},
-#     {'ip_port': 'aes-256-cfb:BSlAILjHC7@114353.tw-1.baacloud1.com:51329', 'user_pass': 'szyt2017:BSlAILjHC7'},
-#     {'ip_port': 'aes-256-cfb:BSlAILjHC7@114353.s-hk-1.baacloud1.com:51329', 'user_pass': 'szyt2017:BSlAILjHC7'},
-#     {'ip_port': 'aaes-256-cfb:BSlAILjHC7@114353.free3.baacloud0.com:51329', 'user_pass': 'szyt2017:BSlAILjHC7'},
-#     {'ip_port': 'aes-256-cfb:BSlAILjHC7@114353.free1.baacloud0.com:51329', 'user_pass': 'szyt2017:BSlAILjHC7'},
-#     ]
 PROXIES = [
-    {'ip_port': '120.92.168.4:16816', 'user_pass': 'wh429004:ylsvtvu1'},
-    ]
+    {'ip_port': '119.29.58.206:17747', 'user_pass': 'wh429004:ylsvtvu1'},
+    {'ip_port': '182.86.174.35:22382', 'user_pass': 'wh429004:ylsvtvu1'},
+    {'ip_port': '119.23.30.228:20189', 'user_pass': 'wh429004:ylsvtvu1'},
+    {'ip_port': '119.23.187.72:17947', 'user_pass': 'wh429004:ylsvtvu1'},
+    {'ip_port': '115.216.117.189:19218', 'user_pass': 'wh429004:ylsvtvu1'},
+    {'ip_port': '124.229.228.78:18031', 'user_pass': 'wh429004:ylsvtvu1'},
+    {'ip_port': '47.111.107.248:29987', 'user_pass': 'wh429004:ylsvtvu1'},
+    {'ip_port': '120.78.124.203:27622', 'user_pass': 'wh429004:ylsvtvu1'},
+    {'ip_port': '218.73.143.61:19594', 'user_pass': 'wh429004:ylsvtvu1'},
+    {'ip_port': '115.221.116.112:23464', 'user_pass': 'wh429004:ylsvtvu1'},
+]
 # 代理服务器
 # proxyServer = "http://http-dyn.abuyun.com:9020"
 # PROXY_SERVER = "http://http-dyn.abuyun.com:9020"
