@@ -84,16 +84,16 @@ USER_AGENTS = [
 USER_PASS = "wh429004:ylsvtvu1"
 # 代理
 PROXIES = [
-    {'ip_port': '119.29.58.206:17747', 'user_pass': 'wh429004:ylsvtvu1'},
-    {'ip_port': '182.86.174.35:22382', 'user_pass': 'wh429004:ylsvtvu1'},
-    {'ip_port': '119.23.30.228:20189', 'user_pass': 'wh429004:ylsvtvu1'},
-    {'ip_port': '119.23.187.72:17947', 'user_pass': 'wh429004:ylsvtvu1'},
-    {'ip_port': '115.216.117.189:19218', 'user_pass': 'wh429004:ylsvtvu1'},
-    {'ip_port': '124.229.228.78:18031', 'user_pass': 'wh429004:ylsvtvu1'},
-    {'ip_port': '47.111.107.248:29987', 'user_pass': 'wh429004:ylsvtvu1'},
-    {'ip_port': '120.78.124.203:27622', 'user_pass': 'wh429004:ylsvtvu1'},
-    {'ip_port': '218.73.143.61:19594', 'user_pass': 'wh429004:ylsvtvu1'},
-    {'ip_port': '115.221.116.112:23464', 'user_pass': 'wh429004:ylsvtvu1'},
+    {'ip_port': '110.85.155.248:15363', 'user_pass': 'wh429004:ylsvtvu1'},
+    {'ip_port': '60.179.238.167:15702', 'user_pass': 'wh429004:ylsvtvu1'},
+    {'ip_port': '115.221.125.143:15197', 'user_pass': 'wh429004:ylsvtvu1'},
+    {'ip_port': '120.78.127.134:23815', 'user_pass': 'wh429004:ylsvtvu1'},
+    {'ip_port': '113.222.80.117:22873', 'user_pass': 'wh429004:ylsvtvu1'},
+    # {'ip_port': '60.179.232.197:16063', 'user_pass': 'wh429004:ylsvtvu1'},
+    # {'ip_port': '59.63.65.209:23298', 'user_pass': 'wh429004:ylsvtvu1'},
+    # {'ip_port': '220.186.144.135:23052', 'user_pass': 'wh429004:ylsvtvu1'},
+    # {'ip_port': '36.106.166.40:20278', 'user_pass': 'wh429004:ylsvtvu1'},
+    # {'ip_port': '113.221.15.101:22702', 'user_pass': 'wh429004:ylsvtvu1'},
 ]
 # 代理服务器
 # proxyServer = "http://http-dyn.abuyun.com:9020"
