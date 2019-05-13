@@ -17,8 +17,9 @@ class YelpspiderPipeline(object):
     user_count = 0
 
     def __init__(self):
-        data_path = OptUtil.gen_file()
-        self.filename = codecs.open(data_path, "w", encoding="utf-8")
+        pass
+        # data_path = OptUtil.gen_file()
+        # self.filename = codecs.open(data_path, "w", encoding="utf-8")
         # self.uid = 100000
         # self.serviceId = 3000000
         # self.categories = [
@@ -51,21 +52,19 @@ class YelpspiderPipeline(object):
         latitude = item['latitude']
         if item['address'] and phone and longitude and latitude:
             item['date_time'] = SqlUtil.gen_current_time()
-            user_sql, user_params = ServiceCompanyOpt.get_sql_info_by_code(item, "service_crawl_data")
+            user_sql, user_params = ServiceCompanyOpt.get_sql_info_by_code(item, "service_crawl_data", 1)
             try:
                 self.user_count += MysqlHelper.insert(user_sql, user_params)
                 print("act rows-------------------------------------------:%d" % self.user_count)
             except Exception as e:
                 print(e)
             content = json.dumps(dict(item), ensure_ascii=False) + '\n'
-            self.filename.write(content)
+            # self.filename.write(content)
         return item
 
     def close_spider(self, spider):
-        self.filename.close()
+        pass
+        # self.filename.close()
 
-    def __init__(self):
-        # pass
-        self.filename = codecs.open(OptUtil.gen_file(), 'w', encoding="utf-8")
 
 

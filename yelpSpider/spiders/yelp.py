@@ -8,8 +8,8 @@ from yelpSpider.items import YelpspiderItem
 class YelpSpider(scrapy.Spider):
     name = 'yelp'
     allowed_domains = ['yelp.com']
-    offset = 850
-    start_urls = ['https://www.yelp.com/search?find_desc=%20Landscaping&find_loc=New%20York%2C%20NY&start='+str(offset)]
+    offset = 100
+    start_urls = ['https://www.yelp.com/search?find_desc=Cleaning%20Company%20&find_loc=New%20York%2C%20NY&start='+str(offset)]
 
     def parse(self, response):
         urls = response.xpath('//div[@class="lemon--div__373c0__1mboc businessName__373c0__1fTgn border-color--default__373c0__2oFDT"]//h3/a[contains(@href, "/biz")]/@href').extract()
@@ -19,9 +19,9 @@ class YelpSpider(scrapy.Spider):
         url_prefix_domain = 'https://www.yelp.com'
         for url, logo in zip(urls, logos):
             yield scrapy.Request(url_prefix_domain + url, callback=self.parse_item, meta={'_logo': logo})
-        if self.offset < 217*10:
+        if self.offset < 308*10:
             self.offset += 10
-            yield scrapy.Request('https://www.yelp.com/search?find_desc=%20Landscaping&find_loc=New%20York%2C%20NY&start='+ str(self.offset), callback=self.parse)
+            yield scrapy.Request('https://www.yelp.com/search?find_desc=Cleaning%20Company%20&find_loc=New%20York%2C%20NY&start='+ str(self.offset), callback=self.parse)
 
     def parse_item(self, response):
         item = YelpspiderItem()

@@ -93,7 +93,6 @@ class MysqlHelper(object):
         try:
             cls.connect()
 
-
             # 获取自增长的主键，一定要在commit之前，否则返回为0
             is_click_url_tab = re.search('click_url', sql)
             if is_click_url_tab:

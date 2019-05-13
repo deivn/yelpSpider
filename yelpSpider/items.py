@@ -35,4 +35,10 @@ class YelpspiderItem(scrapy.Item):
     date_time = scrapy.Field()
 
 
+class ProxyInfo(scrapy.Item):
+    proxy = scrapy.Field()
+    date_time = scrapy.Field()
+
+
+
 
