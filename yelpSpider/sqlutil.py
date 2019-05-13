@@ -17,7 +17,7 @@ class SqlUtil(object):
         for i in range(0, len(_fields)):
             placeholders.append("%s")
         placeholder_str = ",".join(placeholders)
-        sql = "insert into %s (%s) values (%s)" % (tab_name, fields, placeholder_str)
+        sql = "insert ignore into %s (%s) values (%s)" % (tab_name, fields, placeholder_str)
         return sql
 
     @classmethod

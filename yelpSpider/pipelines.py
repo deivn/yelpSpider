@@ -14,6 +14,7 @@ from yelpSpider.dealopt import ServiceCompanyOpt
 
 
 class YelpspiderPipeline(object):
+    user_count = 0
 
     def __init__(self):
         data_path = OptUtil.gen_file()
@@ -52,8 +53,8 @@ class YelpspiderPipeline(object):
             item['date_time'] = SqlUtil.gen_current_time()
             user_sql, user_params = ServiceCompanyOpt.get_sql_info_by_code(item, "service_crawl_data")
             try:
-                user_count = MysqlHelper.insert(user_sql, user_params)
-                print("act rows: %d" % user_count)
+                self.user_count += MysqlHelper.insert(user_sql, user_params)
+                print("act rows-------------------------------------------:%d" % self.user_count)
             except Exception as e:
                 print(e)
             content = json.dumps(dict(item), ensure_ascii=False) + '\n'

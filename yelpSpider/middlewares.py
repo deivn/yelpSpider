@@ -49,26 +49,29 @@ class RandomProxy(object):
 
     @classmethod
     def from_crawler(cls, crawler):
-        # proxies = []
-        # proxy_list = []
-        # url = 'https://dps.kdlapi.com/api/getdps/?orderid=995728565437721' \
-        #       '&num=100&area=%E5%8C%97%E4%BA%AC%2C%E4%B8%8A%E6%B5%B7%2C%E6%B5%99%E6%B1%9F%2C%E6%B1%9F%E8%A5%BF%2C%E6%B2%B3%E5%8C%97%2C%E5%B9%BF%E5%B7%9E%2C%E9%A6%99%E6%B8%AF' \
-        #       '&pt=1&f_citycode=1&format=json&sep=1&signature=sq5pzskhi33dmpt8h16ksm16br8xd45v'
-        # ssl._create_default_https_context = ssl._create_unverified_context
-        # result = request.urlopen(quote(url, safe=string.printable))
-        # info = result.read().decode(encoding='utf-8')
-        # print("私密代理接口接口获取IP列表结果返回信息: info= %s" % info)
-        # if info:
-        #     result_info = json.loads(info)
-        #     if result_info and result_info.get("data"):
-        #         data = result_info.get("data")
-        #         if data and data.get("proxy_list"):
-        #             proxy_list = data.get("proxy_list")
-        # if proxy_list:
-        #     for _ip in proxy_list:
-        #         ip_port = _ip.split(",")[0]
-        #         proxies.append({"ip_port": ip_port, "user_pass": settings['USER_PASS']})
-        return cls(settings['PROXIES'])
+        proxies = []
+        proxy_list = []
+        url = 'https://dps.kdlapi.com/api/getdps/?orderid=915771133465773&num=50&area=%E6%B5%99%E6%B1%9F%2C%E5%8C%97%E4%BA%AC%2C%E6%B9%96%E5%8D%97%2C%E9%A6%99%E6%B8%AF%2C%E4%BA%91%E5%8D%97%2C%E6%B5%99%E6%B1%9F%2C%E6%B1%9F%E8%8B%8F%2C%E8%B4%B5%E5%B7%9E&pt=1&dedup=1&format=json&sep=1&signature=27zcmsq40fqnyk506ev51impu1hc0ipy'
+        ssl._create_default_https_context = ssl._create_unverified_context
+        result = request.urlopen(quote(url, safe=string.printable))
+        info = None
+        try:
+            info = result.read().decode(encoding='utf-8')
+            if info:
+                result_info = json.loads(info)
+                if result_info and result_info.get("data"):
+                    data = result_info.get("data")
+                    if data and data.get("proxy_list"):
+                        proxy_list = data.get("proxy_list")
+            if proxy_list:
+                for _ip in proxy_list:
+                    ip_port = _ip.split(",")[0]
+                    proxies.append({"ip_port": ip_port, "user_pass": settings['USER_PASS']})
+            return cls(proxies)
+        except Exception as e:
+            info = result.read()
+        print("私密代理接口接口获取IP列表结果返回信息: info= %s" % info)
+
 
     def process_request(self, request, spider):
         proxy = random.choice(self.proxies)
