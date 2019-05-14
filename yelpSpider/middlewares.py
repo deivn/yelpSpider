@@ -60,18 +60,21 @@ class RandomProxy(object):
     proxies = []
 
     def __init__(self):
-        self.proxies = self.get_ip_proxy()
+        # self.proxies = self.get_ip_proxy()
+        self.proxies = []
         if self.proxies:
-            proxy_items = []
             for proxy in self.proxies:
                 proxy_item = ProxyInfo()
                 proxy_item['proxy'] = str(json.dumps(dict(proxy), ensure_ascii=False))
                 proxy_item['date_time'] = SqlUtil.gen_current_time()
-                proxy_items.append(proxy_item)
-            if proxy_items:
-                for proxy_item in proxy_items:
-                    user_sql, user_params = ServiceCompanyOpt.get_sql_info_by_code(proxy_item, "proxy_info", 2)
-                    user_count = MysqlHelper.insert(user_sql, user_params)
+                user_sql, user_params = ServiceCompanyOpt.get_sql_info_by_code(proxy_item, "proxy_info", 2)
+                user_count = MysqlHelper.insert(user_sql, user_params)
+                print("新增代理IP: %d" %user_count)
+        else:
+            proxies = MysqlHelper.get_all('select proxy from proxy_info', [])
+            if proxies and isinstance(proxies, tuple):
+                for t in proxies:
+                    self.proxies.append(json.loads(t[0]))
 
     # @classmethod
     # def from_crawler(cls):
@@ -144,31 +147,52 @@ class ProcessAllExceptionMiddleware(object):
         # 删除失效的代理
         self.del_proxy(request.meta.get('proxy', False))
         # 新生成的代理列表
-        _proxies = self.get_ip_proxy()
-        # 生产一批代理新的入库
-        proxies = self.get_proxies(_proxies)
+        proxies = MysqlHelper.get_all('select proxy from proxy_info', [])
+        if len(proxies) <= 5:
+            # 生产一批代理新的入库
+            proxies = self.get_ip_proxy()
+            if proxies:
+                self.batch_insert_proxy(proxies)
+        proxies_tmps = []
+        if proxies and isinstance(proxies, tuple):
+            for t in proxies:
+                proxies_tmps.append(json.loads(t[0]))
+        if proxies_tmps:
+            proxies = proxies_tmps
         # 设置代理
         self.set_proxy(request, spider, proxies)
+
+    def batch_insert_proxy(self, proxies):
+        for proxy in proxies:
+            proxy_item = ProxyInfo()
+            proxy_item['proxy'] = str(json.dumps(dict(proxy), ensure_ascii=False))
+            proxy_item['date_time'] = SqlUtil.gen_current_time()
+            user_sql, user_params = ServiceCompanyOpt.get_sql_info_by_code(proxy_item, "proxy_info", 2)
+            user_count = MysqlHelper.insert(user_sql, user_params)
+            print("新增代理IP: %d" % user_count)
 
     '''删除过期的代理'''
     def del_proxy(self, proxy, res=None):
         print('删除代理')
         proxies = MysqlHelper.get_all('select proxy from proxy_info', [])
         if proxies:
-            for ip_proxy in proxies[0]:
+            for proxy_item in proxies:
+                ip_proxy = proxy_item[0]
                 _proxy = json.loads(ip_proxy)['ip_port']
-                if re.findall(proxy, _proxy):
-                    print('已过期需要删除的代理: %s' % proxy)
-                    count = MysqlHelper.delete('delete from proxy_info where proxy= %s', [proxy])
+                if re.findall(_proxy, proxy):
+                    print('已过期需要删除的代理: %s' % ip_proxy)
+                    count = MysqlHelper.delete('delete from proxy_info where proxy= %s', [ip_proxy])
                     print('成功删除代理%s--------rows act: %d' % (proxy, count))
 
     '''功能：获取新的可用的代理list'''
     def get_proxies(self, proxies):
         _proxies = []
         if proxies:
-            for proxy in proxies:
-                user_sql, user_params = ServiceCompanyOpt.get_sql_info_by_code(proxy, "proxy_info", 2)
-                MysqlHelper.insert(user_sql, user_params)
+            proxy_item = ProxyInfo()
+            proxy_item['proxy'] = str(json.dumps(dict(proxies[0]), ensure_ascii=False))
+            proxy_item['date_time'] = SqlUtil.gen_current_time()
+            user_sql, user_params = ServiceCompanyOpt.get_sql_info_by_code(proxy_item, "proxy_info", 2)
+            MysqlHelper.insert(user_sql, user_params)
             _proxies = proxies
         else:
             proxies = MysqlHelper.get_all('select proxy from proxy_info', [])
