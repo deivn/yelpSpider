@@ -153,9 +153,13 @@ class ProcessAllExceptionMiddleware(object):
     def del_proxy(self, proxy, res=None):
         print('删除代理')
         proxies = MysqlHelper.get_all('select proxy from proxy_info', [])
-        if proxies and proxy in proxies:
-            print('已过期需要删除的代理: %s' % proxy)
-            MysqlHelper.delete('delete from proxy_info where proxy= %s', [proxy])
+        if proxies:
+            for ip_proxy in proxies[0]:
+                _proxy = json.loads(ip_proxy)['ip_port']
+                if _proxy is proxy:
+                    print('已过期需要删除的代理: %s' % proxy)
+                    count = MysqlHelper.delete('delete from proxy_info where proxy= %s', [proxy])
+                    print('成功删除代理%s--------rows act: %d' % (proxy, count))
 
     '''功能：获取新的可用的代理list'''
     def get_proxies(self, proxies):
