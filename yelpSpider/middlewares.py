@@ -25,6 +25,7 @@ from twisted.internet.error import TimeoutError, DNSLookupError, \
 from twisted.web.client import ResponseFailed
 from scrapy.core.downloader.handlers.http11 import TunnelError
 from scrapy.http import HtmlResponse
+import re
 
 
 # USER-AGENT中间件代理类
@@ -156,7 +157,7 @@ class ProcessAllExceptionMiddleware(object):
         if proxies:
             for ip_proxy in proxies[0]:
                 _proxy = json.loads(ip_proxy)['ip_port']
-                if _proxy is proxy:
+                if re.findall(proxy, _proxy):
                     print('已过期需要删除的代理: %s' % proxy)
                     count = MysqlHelper.delete('delete from proxy_info where proxy= %s', [proxy])
                     print('成功删除代理%s--------rows act: %d' % (proxy, count))
