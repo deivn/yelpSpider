@@ -8,7 +8,7 @@ from yelpSpider.items import YelpspiderItem
 class YelpSpider(scrapy.Spider):
     name = 'yelp'
     allowed_domains = ['yelp.com']
-    offset = 650
+    offset = 720
     start_urls = ['https://www.yelp.com/search?find_desc=Cleaning%20Company%20&find_loc=New%20York%2C%20NY&start='+str(offset)]
 
     def parse(self, response):

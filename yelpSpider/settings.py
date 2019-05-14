@@ -117,7 +117,7 @@ DOWNLOADER_MIDDLEWARES = {
     'scrapy.contrib.downloadermiddleware.redirect.RedirectMiddleware': None,
     # 'scrapy.downloadermiddlewares.downloadtimeout.DownloadTimeoutMiddleware': 350,
     'yelpSpider.middlewares.RandomUserAgent': 400,
-    # 'yelpSpider.middlewares.RandomProxy': 110,
+    'yelpSpider.middlewares.RandomProxy': 600,
     'yelpSpider.middlewares.ProcessAllExceptionMiddleware': 750,
 
 }
