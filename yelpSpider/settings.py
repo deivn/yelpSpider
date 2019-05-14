@@ -49,8 +49,8 @@ REDIRECT_ENABLED = False
 COOKIES_ENABLED = False
 
 CLOSESPIDER_ITEMCOUNT = 50
-DOWNLOAD_DELAY=0.5
-CONCURRENT_REQUESTS = 16
+DOWNLOAD_DELAY = 0.5
+CONCURRENT_REQUESTS = 40
 DOWNLOAD_TIMEOUT = 30
 
 # Disable Telnet Console (enabled by default)
@@ -113,12 +113,13 @@ PROXIES = [
 # Enable or disable downloader middlewares
 # See https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
-    'yelpSpider.middlewares.RandomUserAgent': 100,
     'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None,
     'scrapy.contrib.downloadermiddleware.redirect.RedirectMiddleware': None,
-    'yelpSpider.middlewares.RandomProxy': 120,
-    'yelpSpider.middlewares.ProcessProxies': 150,
-    'scrapy.downloadermiddlewares.downloadtimeout.DownloadTimeoutMiddleware': 500
+    # 'scrapy.downloadermiddlewares.downloadtimeout.DownloadTimeoutMiddleware': 350,
+    'yelpSpider.middlewares.RandomUserAgent': 400,
+    # 'yelpSpider.middlewares.RandomProxy': 110,
+    'yelpSpider.middlewares.ProcessAllExceptionMiddleware': 750,
+
 }
 
 RETRY_TIMES = 10
