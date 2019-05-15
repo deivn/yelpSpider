@@ -135,7 +135,7 @@ class ProcessAllExceptionMiddleware(RetryMiddleware):
         if response.status != 200:
             print('状态码异常')
             reason = response_status_message(response.status)
-            self.proxy_opt(self, request)
+            # self.proxy_opt(self, request)
             time.sleep(random.randint(3, 5))
             return self._retry(request, reason, spider) or response
         return response
@@ -145,7 +145,13 @@ class ProcessAllExceptionMiddleware(RetryMiddleware):
         if isinstance(exception, self.ALL_EXCEPTIONS):
             # 在日志中打印异常类型
             print('Got exception: %s' % (exception))
-            self.proxy_opt(request, spider)
+            if re.findall(r'Connection was refused by other side', str(exception)) or \
+                    re.findall(r'connection timed out', str(exception)) or \
+                    re.findall(r'User timeout caused connection failure', str(exception)):
+                self.del_proxy(request.meta.get('proxy', False))
+            else:
+                self.proxy_opt(request, spider)
+            time.sleep(random.randint(3, 5))
             # 随意封装一个response，返回给spider
             response = HtmlResponse(url='exception')
             return self._retry(request, exception, spider) or response
