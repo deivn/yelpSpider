@@ -8,7 +8,7 @@ from yelpSpider.items import YelpspiderItem
 class YelpSpider(scrapy.Spider):
     name = 'yelp'
     allowed_domains = ['yelp.com']
-    offset = 250
+    offset = 120
     start_urls = ['https://www.yelp.com/search?find_desc=Carpet+Cleaning+Service&find_loc=New+York%2C+NY&ns=1&start='+str(offset)]
 
     def parse(self, response):
@@ -19,7 +19,7 @@ class YelpSpider(scrapy.Spider):
         url_prefix_domain = 'https://www.yelp.com'
         for url, logo in zip(urls, logos):
             yield scrapy.Request(url_prefix_domain + url, callback=self.parse_item, meta={'_logo': logo})
-        if self.offset < 233*10:
+        if self.offset < 12*10:
             self.offset += 10
             yield scrapy.Request('https://www.yelp.com/search?find_desc=Carpet+Cleaning+Service&find_loc=New+York%2C+NY&ns=1&start='+ str(self.offset), callback=self.parse)
 

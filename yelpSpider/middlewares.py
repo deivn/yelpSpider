@@ -25,7 +25,10 @@ from twisted.internet.error import TimeoutError, DNSLookupError, \
 from twisted.web.client import ResponseFailed
 from scrapy.core.downloader.handlers.http11 import TunnelError
 from scrapy.http import HtmlResponse
+from scrapy.utils.response import response_status_message
+from scrapy.downloadermiddlewares.retry import RetryMiddleware
 import re
+
 
 
 # USER-AGENT中间件代理类
@@ -114,7 +117,7 @@ class RandomProxy(object):
         return self.proxies
 
 
-class ProcessAllExceptionMiddleware(object):
+class ProcessAllExceptionMiddleware(RetryMiddleware):
 
     ALL_EXCEPTIONS = (defer.TimeoutError, TimeoutError, DNSLookupError,
                       ConnectionRefusedError, ConnectionDone, ConnectError,
@@ -122,9 +125,16 @@ class ProcessAllExceptionMiddleware(object):
                       IOError, TunnelError)
 
     def process_response(self, request, response, spider):
+        if request.meta.get('dont_retry', False):
+            return response
+
+        if response.status in self.retry_http_codes:
+            reason = response_status_message(response.status)
+            return self._retry(request, reason, spider) or response
+
         if response.status != 200:
             print('状态码异常')
-            reason = self.response_status_message(response.status)
+            reason = response_status_message(response.status)
             self.proxy_opt(self, request)
             time.sleep(random.randint(3, 5))
             return self._retry(request, reason, spider) or response
@@ -138,7 +148,8 @@ class ProcessAllExceptionMiddleware(object):
             self.proxy_opt(request, spider)
             # 随意封装一个response，返回给spider
             response = HtmlResponse(url='exception')
-            return response
+            return self._retry(request, exception, spider) or response
+            # return response
         # 打印出未捕获到的异常
         print('not contained exception: %s' % exception)
 
@@ -173,13 +184,13 @@ class ProcessAllExceptionMiddleware(object):
 
     '''删除过期的代理'''
     def del_proxy(self, proxy, res=None):
-        print('删除代理')
         proxies = MysqlHelper.get_all('select proxy from proxy_info', [])
         if proxies:
             for proxy_item in proxies:
                 ip_proxy = proxy_item[0]
                 _proxy = json.loads(ip_proxy)['ip_port']
-                if re.findall(_proxy, proxy):
+                _tmp = re.findall(_proxy, proxy)
+                if _tmp:
                     print('已过期需要删除的代理: %s' % ip_proxy)
                     count = MysqlHelper.delete('delete from proxy_info where proxy= %s', [ip_proxy])
                     print('成功删除代理%s--------rows act: %d' % (proxy, count))

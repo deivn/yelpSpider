@@ -38,21 +38,16 @@ REDIRECT_ENABLED = False
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 # CONCURRENT_REQUESTS = 32
 
-# Configure a delay for requests for the same website (default: 0)
-# See https://doc.scrapy.org/en/latest/topics/settings.html#download-delay
-# See also autothrottle settings and docs
-# DOWNLOAD_DELAY = 3
-# The download delay setting will honor only one of:
-# CONCURRENT_REQUESTS_PER_DOMAIN = 40
-# CONCURRENT_REQUESTS_PER_IP = 16
-# Disable cookies (enabled by default)
 COOKIES_ENABLED = False
 
 # scrapy结束条件
 # CLOSESPIDER_ITEMCOUNT = 50
+# 延时0.5秒
 DOWNLOAD_DELAY = 0.5
 CONCURRENT_REQUESTS = 40
 DOWNLOAD_TIMEOUT = 30
+# 每个账号失败次数上限，失败次数多有可能已经被禁
+MAX_FAIL_TIME = 10
 
 
 # Disable Telnet Console (enabled by default)
@@ -62,12 +57,6 @@ DOWNLOAD_TIMEOUT = 30
 DEFAULT_REQUEST_HEADERS = {
     'Accept-Encoding': 'gzip',
 }
-
-# Enable or disable spider middlewares
-# See https://doc.scrapy.org/en/latest/topics/spider-middleware.html
-#SPIDER_MIDDLEWARES = {
-#    'realtorSpider.middlewares.RealtorspiderSpiderMiddleware': 543,
-#}
 
 # 下载中间件配置User-Agent池
 USER_AGENTS = [
@@ -96,24 +85,7 @@ PROXIES = [
     {'ip_port': '115.221.125.143:15197', 'user_pass': 'wh429004:ylsvtvu1'},
     {'ip_port': '120.78.127.134:23815', 'user_pass': 'wh429004:ylsvtvu1'},
     {'ip_port': '113.222.80.117:22873', 'user_pass': 'wh429004:ylsvtvu1'},
-    # {'ip_port': '60.179.232.197:16063', 'user_pass': 'wh429004:ylsvtvu1'},
-    # {'ip_port': '59.63.65.209:23298', 'user_pass': 'wh429004:ylsvtvu1'},
-    # {'ip_port': '220.186.144.135:23052', 'user_pass': 'wh429004:ylsvtvu1'},
-    # {'ip_port': '36.106.166.40:20278', 'user_pass': 'wh429004:ylsvtvu1'},
-    # {'ip_port': '113.221.15.101:22702', 'user_pass': 'wh429004:ylsvtvu1'},
 ]
-# 代理服务器
-# proxyServer = "http://http-dyn.abuyun.com:9020"
-# PROXY_SERVER = "http://http-dyn.abuyun.com:9020"
-
-# 代理隧道验证信息
-# proxyUser = "H012345678901zyx"
-# proxyPass = "0123456789012xyz"
-# PROXY_USER= "H012345678901zyx"
-# PROXY_PASS= "0123456789012xyz"
-
-# Enable or disable downloader middlewares
-# See https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
     'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None,
     'scrapy.contrib.downloadermiddleware.redirect.RedirectMiddleware': None,
