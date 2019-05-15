@@ -141,6 +141,7 @@ class ProcessAllExceptionMiddleware(RetryMiddleware):
         return response
 
     def process_exception(self, request, exception, spider):
+        # 设置同一个代理发生异常的次数
         # 捕获几乎所有的异常
         if isinstance(exception, self.ALL_EXCEPTIONS):
             # 在日志中打印异常类型
@@ -148,9 +149,10 @@ class ProcessAllExceptionMiddleware(RetryMiddleware):
             if re.findall(r'Connection was refused by other side', str(exception)) or \
                     re.findall(r'connection timed out', str(exception)) or \
                     re.findall(r'User timeout caused connection failure', str(exception)):
+                # 删除失效的代理
                 self.del_proxy(request.meta.get('proxy', False))
-            else:
-                self.proxy_opt(request, spider)
+            # 设置新的代理
+            self.proxy_opt(request, spider)
             time.sleep(random.randint(3, 5))
             # 随意封装一个response，返回给spider
             response = HtmlResponse(url='exception')
@@ -161,23 +163,21 @@ class ProcessAllExceptionMiddleware(RetryMiddleware):
 
     '''1.获取代理'''
     def proxy_opt(self, request, spider):
-        # 删除失效的代理
-        self.del_proxy(request.meta.get('proxy', False))
-        # 新生成的代理列表
+        # 获取代理列表
         proxies = MysqlHelper.get_all('select proxy from proxy_info', [])
         if len(proxies) <= 5:
             # 生产一批代理新的入库
             proxies = self.get_ip_proxy()
             if proxies:
                 self.batch_insert_proxy(proxies)
-        proxies_tmps = []
-        if proxies and isinstance(proxies, tuple):
+                # 设置代理
+                self.set_proxy(request, spider, proxies)
+        else:
+            # 设置代理
+            proxies_tmps = []
             for t in proxies:
                 proxies_tmps.append(json.loads(t[0]))
-        if proxies_tmps:
-            proxies = proxies_tmps
-        # 设置代理
-        self.set_proxy(request, spider, proxies)
+            self.set_proxy(request, spider, proxies)
 
     def batch_insert_proxy(self, proxies):
         for proxy in proxies:
