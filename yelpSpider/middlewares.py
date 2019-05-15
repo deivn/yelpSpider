@@ -177,7 +177,7 @@ class ProcessAllExceptionMiddleware(RetryMiddleware):
             proxies_tmps = []
             for t in proxies:
                 proxies_tmps.append(json.loads(t[0]))
-            self.set_proxy(request, spider, proxies)
+            self.set_proxy(request, spider, proxies_tmps)
 
     def batch_insert_proxy(self, proxies):
         for proxy in proxies:
