@@ -59,6 +59,7 @@ class RandomUserAgent(object):
 动态设置代理ip
 '''
 
+
 class RandomProxy(object):
     proxies = []
 
@@ -75,7 +76,7 @@ class RandomProxy(object):
                 print("新增代理IP: %d" %user_count)
         else:
             proxies = MysqlHelper.get_all('select proxy from proxy_info', [])
-            if proxies and isinstance(proxies, tuple):
+            if proxies:
                 for t in proxies:
                     self.proxies.append(json.loads(t[0]))
 
@@ -96,7 +97,7 @@ class RandomProxy(object):
 
     def get_ip_proxy(self):
         proxy_list = []
-        url = 'https://dps.kdlapi.com/api/getdps/?orderid=995728565437721&num=1&area=%E5%B9%BF%E4%B8%9C%2C%E7%A6%8F%E5%BB%BA%2C%E6%B5%99%E6%B1%9F%2C%E6%B1%9F%E8%A5%BF%2C%E5%8C%97%E4%BA%AC%2C%E6%B9%96%E5%8D%97%2C%E9%A6%99%E6%B8%AF%2C%E4%BA%91%E5%8D%97%2C%E5%A4%A9%E6%B4%A5%2C%E6%B1%9F%E8%8B%8F%2C%E6%B9%96%E5%8C%97%2C%E6%B2%B3%E5%8D%97&pt=1&ut=2&dedup=1&format=json&sep=1&signature=sq5pzskhi33dmpt8h16ksm16br8xd45v'
+        url = 'https://dps.kdlapi.com/api/getdps/?orderid=995728565437721&num=3&area=%E5%B9%BF%E4%B8%9C%2C%E7%A6%8F%E5%BB%BA%2C%E6%B5%99%E6%B1%9F%2C%E6%B1%9F%E8%A5%BF%2C%E5%8C%97%E4%BA%AC%2C%E6%B9%96%E5%8D%97%2C%E9%A6%99%E6%B8%AF%2C%E4%BA%91%E5%8D%97%2C%E5%A4%A9%E6%B4%A5%2C%E6%B1%9F%E8%8B%8F%2C%E6%B9%96%E5%8C%97%2C%E6%B2%B3%E5%8D%97&pt=1&ut=2&dedup=1&format=json&sep=1&signature=sq5pzskhi33dmpt8h16ksm16br8xd45v'
         ssl._create_default_https_context = ssl._create_unverified_context
         result = request.urlopen(quote(url, safe=string.printable))
         info = None
@@ -149,8 +150,8 @@ class ProcessAllExceptionMiddleware(RetryMiddleware):
             if re.findall(r'Connection was refused by other side', str(exception)) or \
                     re.findall(r'connection timed out', str(exception)) or \
                     re.findall(r'User timeout caused connection failure', str(exception)) or \
-                    re.findall(r'Could not open CONNECT tunnel', str(exception)) or \
-                    re.findall(r'Connection to the other side was lost', str(exception)):
+                    re.findall(r'Connection to the other side was lost', str(exception)) or \
+                    re.findall(r'Could not open CONNECT tunnel', str(exception)):
                 # 删除失效的代理
                 self.del_proxy(request.meta.get('proxy', False))
             # 设置新的代理
@@ -167,7 +168,8 @@ class ProcessAllExceptionMiddleware(RetryMiddleware):
     def proxy_opt(self, request, spider):
         # 获取代理列表
         proxies = MysqlHelper.get_all('select proxy from proxy_info', [])
-        if len(proxies) <= 5:
+        _list = self.format_tuple2list(proxies)
+        if len(_list) <= 5:
             # 生产一批代理新的入库
             proxies = self.get_ip_proxy()
             if proxies:
@@ -180,6 +182,14 @@ class ProcessAllExceptionMiddleware(RetryMiddleware):
             for t in proxies:
                 proxies_tmps.append(json.loads(t[0]))
             self.set_proxy(request, spider, proxies_tmps)
+
+    '''将tuple转换为list'''
+    def format_tuple2list(self, proxies):
+        _list = []
+        if proxies:
+            for t in proxies:
+                _list.append(json.loads(t[0]))
+        return _list
 
     def batch_insert_proxy(self, proxies):
         for proxy in proxies:
@@ -234,7 +244,7 @@ class ProcessAllExceptionMiddleware(RetryMiddleware):
     def get_ip_proxy(self):
         proxy_list = []
         proxy_newlist = []
-        url = 'https://dps.kdlapi.com/api/getdps/?orderid=995728565437721&num=1&area=%E5%B9%BF%E4%B8%9C%2C%E7%A6%8F%E5%BB%BA%2C%E6%B5%99%E6%B1%9F%2C%E6%B1%9F%E8%A5%BF%2C%E5%8C%97%E4%BA%AC%2C%E6%B9%96%E5%8D%97%2C%E9%A6%99%E6%B8%AF%2C%E4%BA%91%E5%8D%97%2C%E5%A4%A9%E6%B4%A5%2C%E6%B1%9F%E8%8B%8F%2C%E6%B9%96%E5%8C%97%2C%E6%B2%B3%E5%8D%97&pt=1&ut=2&dedup=1&format=json&sep=1&signature=sq5pzskhi33dmpt8h16ksm16br8xd45v'
+        url = 'https://dps.kdlapi.com/api/getdps/?orderid=995728565437721&num=3&area=%E5%B9%BF%E4%B8%9C%2C%E7%A6%8F%E5%BB%BA%2C%E6%B5%99%E6%B1%9F%2C%E6%B1%9F%E8%A5%BF%2C%E5%8C%97%E4%BA%AC%2C%E6%B9%96%E5%8D%97%2C%E9%A6%99%E6%B8%AF%2C%E4%BA%91%E5%8D%97%2C%E5%A4%A9%E6%B4%A5%2C%E6%B1%9F%E8%8B%8F%2C%E6%B9%96%E5%8C%97%2C%E6%B2%B3%E5%8D%97&pt=1&ut=2&dedup=1&format=json&sep=1&signature=sq5pzskhi33dmpt8h16ksm16br8xd45v'
         ssl._create_default_https_context = ssl._create_unverified_context
         result = request.urlopen(quote(url, safe=string.printable))
         info = None
