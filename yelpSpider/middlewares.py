@@ -148,7 +148,8 @@ class ProcessAllExceptionMiddleware(RetryMiddleware):
             print('Got exception: %s' % (exception))
             if re.findall(r'Connection was refused by other side', str(exception)) or \
                     re.findall(r'connection timed out', str(exception)) or \
-                    re.findall(r'User timeout caused connection failure', str(exception)):
+                    re.findall(r'User timeout caused connection failure', str(exception)) or \
+                    re.findall(r'Could not open CONNECT tunnel', str(exception)):
                 # 删除失效的代理
                 self.del_proxy(request.meta.get('proxy', False))
             # 设置新的代理
