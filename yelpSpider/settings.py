@@ -48,10 +48,12 @@ REDIRECT_ENABLED = False
 # Disable cookies (enabled by default)
 COOKIES_ENABLED = False
 
-CLOSESPIDER_ITEMCOUNT = 50
+# scrapy结束条件
+# CLOSESPIDER_ITEMCOUNT = 50
 DOWNLOAD_DELAY = 0.5
 CONCURRENT_REQUESTS = 40
 DOWNLOAD_TIMEOUT = 30
+
 
 # Disable Telnet Console (enabled by default)
 #TELNETCONSOLE_ENABLED = False

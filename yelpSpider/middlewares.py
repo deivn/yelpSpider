@@ -93,7 +93,7 @@ class RandomProxy(object):
 
     def get_ip_proxy(self):
         proxy_list = []
-        url = 'https://dps.kdlapi.com/api/getdps/?orderid=995728565437721&num=10&area=%E5%B9%BF%E4%B8%9C%2C%E7%A6%8F%E5%BB%BA%2C%E6%B5%99%E6%B1%9F%2C%E6%B1%9F%E8%A5%BF%2C%E5%8C%97%E4%BA%AC%2C%E6%B9%96%E5%8D%97%2C%E9%A6%99%E6%B8%AF%2C%E4%BA%91%E5%8D%97%2C%E5%A4%A9%E6%B4%A5&pt=1&ut=2&dedup=1&format=json&sep=1&signature=sq5pzskhi33dmpt8h16ksm16br8xd45v'
+        url = 'https://dps.kdlapi.com/api/getdps/?orderid=995728565437721&num=2&area=%E5%B9%BF%E4%B8%9C%2C%E7%A6%8F%E5%BB%BA%2C%E6%B5%99%E6%B1%9F%2C%E6%B1%9F%E8%A5%BF%2C%E5%8C%97%E4%BA%AC%2C%E6%B9%96%E5%8D%97%2C%E9%A6%99%E6%B8%AF%2C%E4%BA%91%E5%8D%97%2C%E5%A4%A9%E6%B4%A5&pt=1&ut=2&format=json&sep=1&signature=sq5pzskhi33dmpt8h16ksm16br8xd45v'
         ssl._create_default_https_context = ssl._create_unverified_context
         result = request.urlopen(quote(url, safe=string.printable))
         info = None
@@ -215,7 +215,7 @@ class ProcessAllExceptionMiddleware(object):
     def get_ip_proxy(self):
         proxy_list = []
         proxy_newlist = []
-        url = 'https://dps.kdlapi.com/api/getdps/?orderid=995728565437721&num=10&area=%E5%B9%BF%E4%B8%9C%2C%E7%A6%8F%E5%BB%BA%2C%E6%B5%99%E6%B1%9F%2C%E6%B1%9F%E8%A5%BF%2C%E5%8C%97%E4%BA%AC%2C%E6%B9%96%E5%8D%97%2C%E9%A6%99%E6%B8%AF%2C%E4%BA%91%E5%8D%97%2C%E5%A4%A9%E6%B4%A5&pt=1&ut=2&dedup=1&format=json&sep=1&signature=sq5pzskhi33dmpt8h16ksm16br8xd45v'
+        url = 'https://dps.kdlapi.com/api/getdps/?orderid=995728565437721&num=2&area=%E5%B9%BF%E4%B8%9C%2C%E7%A6%8F%E5%BB%BA%2C%E6%B5%99%E6%B1%9F%2C%E6%B1%9F%E8%A5%BF%2C%E5%8C%97%E4%BA%AC%2C%E6%B9%96%E5%8D%97%2C%E9%A6%99%E6%B8%AF%2C%E4%BA%91%E5%8D%97%2C%E5%A4%A9%E6%B4%A5&pt=1&ut=2&format=json&sep=1&signature=sq5pzskhi33dmpt8h16ksm16br8xd45v'
         ssl._create_default_https_context = ssl._create_unverified_context
         result = request.urlopen(quote(url, safe=string.printable))
         info = None
