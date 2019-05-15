@@ -44,7 +44,7 @@ COOKIES_ENABLED = False
 # CLOSESPIDER_ITEMCOUNT = 50
 # 延时0.5秒
 DOWNLOAD_DELAY = 0.5
-CONCURRENT_REQUESTS = 40
+CONCURRENT_REQUESTS = 30
 DOWNLOAD_TIMEOUT = 30
 # 每个账号失败次数上限，失败次数多有可能已经被禁
 MAX_FAIL_TIME = 10
@@ -93,7 +93,6 @@ DOWNLOADER_MIDDLEWARES = {
     'yelpSpider.middlewares.RandomUserAgent': 400,
     'yelpSpider.middlewares.RandomProxy': 600,
     'yelpSpider.middlewares.ProcessAllExceptionMiddleware': 750,
-
 }
 
 RETRY_TIMES = 10

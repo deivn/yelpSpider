@@ -135,10 +135,11 @@ class ProcessAllExceptionMiddleware(RetryMiddleware):
 
         if response.status != 200:
             print('状态码异常')
-            reason = response_status_message(response.status)
+            # reason = response_status_message(response.status)
             # self.proxy_opt(self, request)
             time.sleep(random.randint(3, 5))
-            return self._retry(request, reason, spider) or response
+            response = HtmlResponse(url='exception')
+            return response
         return response
 
     def process_exception(self, request, exception, spider):
@@ -147,13 +148,15 @@ class ProcessAllExceptionMiddleware(RetryMiddleware):
         if isinstance(exception, self.ALL_EXCEPTIONS):
             # 在日志中打印异常类型
             print('Got exception: %s' % (exception))
-            if re.findall(r'Connection was refused by other side', str(exception)) or \
-                    re.findall(r'connection timed out', str(exception)) or \
-                    re.findall(r'User timeout caused connection failure', str(exception)) or \
-                    re.findall(r'Connection to the other side was lost', str(exception)) or \
-                    re.findall(r'Could not open CONNECT tunnel', str(exception)):
-                # 删除失效的代理
-                self.del_proxy(request.meta.get('proxy', False))
+            self.del_proxy(request.meta.get('proxy', False))
+            # if re.findall(r'Connection was refused by other side', str(exception)) or \
+            #         re.findall(r'TCP connection timed out: 10060', str(exception)) or \
+            #         re.findall(r'User timeout caused connection failure', str(exception)) or \
+            #         re.findall(r'Connection to the other side was lost', str(exception)) or \
+            #         re.findall(r'Connection was refused by other side: 10061', str(exception)) or \
+            #         re.findall(r'Could not open CONNECT tunnel', str(exception)):
+            #     # 删除失效的代理
+            #     self.del_proxy(request.meta.get('proxy', False))
             # 设置新的代理
             self.proxy_opt(request, spider)
             time.sleep(random.randint(3, 5))
@@ -169,7 +172,8 @@ class ProcessAllExceptionMiddleware(RetryMiddleware):
         # 获取代理列表
         proxies = MysqlHelper.get_all('select proxy from proxy_info', [])
         _list = self.format_tuple2list(proxies)
-        if len(_list) <= 5:
+        print("current proxies total size:------------%d" % len(_list))
+        if len(_list) <= 10:
             # 生产一批代理新的入库
             proxies = self.get_ip_proxy()
             if proxies:
